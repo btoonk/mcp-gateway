@@ -1,0 +1,50 @@
+{
+  "upstreams": [
+    {
+      "name": "duckduck-go",
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["duckduckgo-mcp-server"],
+      "env": { "FOO": "bar" }
+    },
+    {
+      "name": "border0-mcp",
+      "type": "http",
+      "url": "http://localhost:8081"
+    },
+    {
+      "name": "b0-mcp",
+      "type": "http",
+      "url": "http://localhost:8081"
+    }
+  ],
+  "identities": [
+    {
+      "name": "bas",
+      "type": "service-account",
+      "apiKey": "aap"
+    },
+    {
+      "name": "andree",
+      "type": "service-account",
+      "apiKey": "andree"
+    }
+  ],
+  "policies": [
+    {
+      "name": "allow b0",
+      "identities": ["bas"],
+      "upstreams": {
+         "b0-mcp": {
+           "tools": ["get_servers"]
+         },
+         "duckduck-go": {}
+      }
+    },
+    {
+      "name": "ops-all",
+      "identities": ["andree"],
+      "upstreams": { "b0-mcp": {} }
+    }
+  ]
+}
